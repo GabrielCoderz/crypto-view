@@ -32,6 +32,7 @@ export class CardCoinComponent implements OnInit {
     .listCrypto()
     .subscribe((data: any) => {
       this.cryptoData.next(data);
+      console.log(data)
     });
   }
 
