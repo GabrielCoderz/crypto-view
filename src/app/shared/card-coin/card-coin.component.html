@@ -1,0 +1,16 @@
+<div *ngFor="let data of (cryptoFilteredData | async); index as i" class="coin-container">
+  <div class="coin-row">
+
+    <div class="coin">
+      <img [src]="data.image" alt="crypto">
+      <h1>{{ data.name }}</h1>
+      <p class="coin-symbol">{{ data.symbol }}</p>
+    </div>
+
+    <div class="coin-data">
+      <p class="coin-price">$ {{ data.current_price }}</p>
+      <p class="coin-volume">$ {{ data.total_volume }}</p>
+    </div>
+
+  </div>
+</div>

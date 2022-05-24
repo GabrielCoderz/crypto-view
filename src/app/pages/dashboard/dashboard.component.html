@@ -1,0 +1,15 @@
+<div class="app-container">
+  <div class="coin-search">
+    <h1 class="coin-text">Procure uma cripto</h1>
+    <form>
+      <input type="text" [(ngModel)]="name" placeholder="Digite aqui.." class="coin-input" name="value"/>
+        {{ name }}
+    </form>
+  </div>
+
+  <app-card-coin
+    [data-input]="name"
+  ></app-card-coin>
+
+
+</div>
