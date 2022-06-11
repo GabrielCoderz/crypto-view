@@ -9,7 +9,7 @@ import { CryptoService } from 'src/app/services/crypto.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  public name: any = ''
+  public userInput: string = ''
 
   constructor() { }
 
@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
+  takeUserInput(input: any): void {
+    this.userInput = input
+  }
 
 }

@@ -9,10 +9,16 @@ import { CryptoService } from 'src/app/services/crypto.service';
   styleUrls: ['./card-coin.component.scss']
 })
 export class CardCoinComponent implements OnInit {
-  @Input('data-input') filterDataInput: string = '';
+  filterDataInput: string = '';
 
   public cryptoData = new BehaviorSubject<any>([])
   public cryptoFilteredData = new BehaviorSubject<any>([])
+  public cryptoFilteredData2 = [];
+  public textError: string = '';
+
+  public isLoading: boolean = true;
+
+  displayedColumns: string[] = ['name', 'value', 'symbol', 'price_percentage', 'actions'];
 
   constructor(private cryptoService: CryptoService) { }
 
@@ -20,29 +26,37 @@ export class CardCoinComponent implements OnInit {
     this.getCryptoService()
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes.filterDataInput) {
-      console.log(this.filterDataInput)
-      this.filterData()
-    }
-  }
-
   getCryptoService() {
     this.cryptoService
     .listCrypto()
     .subscribe((data: any) => {
       this.cryptoData.next(data);
+      this.filterData()
+      this.isLoading = false;
       console.log(data)
     });
+  }
+
+  onKeyUpInput($event: any) {
+    this.filterDataInput = $event.target.value;
+    this.filterData()
   }
 
   filterData() {
     this.cryptoData
     .pipe(
-      tap((data: Array<[]>) => {
+      tap((data: any) => {
         this.cryptoFilteredData.next(
           data.filter((coin: any) => coin.name.toLowerCase().includes(this.filterDataInput.toLowerCase()))
         )
+
+        this.cryptoFilteredData2 = data.filter((coin: any) => coin.name.toLowerCase().includes(this.filterDataInput.toLowerCase()));
+
+        if(this.cryptoFilteredData2.length === 0) {
+          this.textError = 'Crypto não encontrada.';
+          console.log(this.textError)
+        }
+
       })
     )
     .subscribe()

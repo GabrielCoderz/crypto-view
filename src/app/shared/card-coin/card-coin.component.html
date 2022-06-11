@@ -1,23 +1,76 @@
-<div *ngFor="let data of (cryptoFilteredData | async); index as i" class="coin-container">
-  <div class="coin-row">
+<div class="container-table">
+  <form>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>
+        <mat-icon aria-hidden="false" aria-label="Example home icon">search</mat-icon> Pesquisar crypto
+      </mat-label>
 
-    <div class="coin">
-      <img [src]="data.image" alt="crypto">
-      <h1>{{ data.name }}</h1>
-      <p class="coin-symbol">{{ data.symbol }}</p>
-    </div>
+      <input matInput type="text" (keyup)="onKeyUpInput($event)" class="coin-input" />
 
-    <div class="coin-data">
-      <p class="coin-price">$ {{ data.current_price | number }}</p>
-      <p class="coin-volume">$ {{ data.total_volume | number }}</p>
-      <p [ngClass]="
-      {'price_percentage_red': data.price_change_percentage_24h < 0,
-      'price_percentage_green': data.price_change_percentage_24h > 0
-      }">
-        {{ data.price_change_percentage_24h | number : '1.2-2'}}%
-      </p>
-      <p class="coin-volume">$ {{ data.market_cap | number }}</p>
-    </div>
+    </mat-form-field>
+  </form>
 
+  <div *ngIf="cryptoFilteredData2.length === 0" class="text-error">
+    <h2>{{ textError }}</h2>
   </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+
+  <table mat-table [dataSource]="cryptoFilteredData2" class="mat-elevation-z8" *ngIf="cryptoFilteredData2.length !== 0">
+
+    <!-- Crypto Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Crypto </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="table-crypto-name">
+          <img [src]="element.image" alt="crypto" />
+            {{element.name}}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Preço </th>
+      <td mat-cell *matCellDef="let element">
+        $ {{ element.current_price | number }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="symbol">
+      <th mat-header-cell *matHeaderCellDef> Symbol </th>
+      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    </ng-container>
+
+    <!-- Price-percentage Column -->
+    <ng-container matColumnDef="price_percentage">
+      <th mat-header-cell *matHeaderCellDef> % </th>
+      <td mat-cell *matCellDef="let element">
+        <span [ngClass]="
+              {'price_percentage_red': element.price_change_percentage_24h < 0,
+              'price_percentage_green': element.price_change_percentage_24h >= 0
+              }">
+          {{ element.price_change_percentage_24h | number : '1.2-2'}}%
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon aria-hidden="false" aria-label="graph">signal_cellular_alt</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+
 </div>
+
+

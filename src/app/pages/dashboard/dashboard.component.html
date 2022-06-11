@@ -1,20 +1,11 @@
 <div class="app-container">
-  <div class="coin-search">
-    <h1 class="coin-text">Procure uma cripto</h1>
-    <form>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label><mat-icon aria-hidden="false" aria-label="Example home icon">search</mat-icon> Pesquisar</mat-label>
+  <app-header
+  >
 
-        <input matInput type="text" [(ngModel)]="name" placeholder="Digite aqui.." class="coin-input" name="value"/>
-
-      </mat-form-field>
-        {{ name }}
-    </form>
-  </div>
+  </app-header>
 
   <app-card-coin
-    [data-input]="name"
-  ></app-card-coin>
+    ></app-card-coin>
 
 
 </div>
